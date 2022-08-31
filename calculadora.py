@@ -2,8 +2,8 @@ import sys
 
 def menu():
     print('1.Sumar\n2.Restar\n3.Multiplicar\n4.Dividir\n5.¿Es a multiplo de b?\n6.¿Es b multiplo de a?\n7.Salir')
-def sumar(papa,batata):
-    return papa+batata
+def sumar(a,b):
+    return a+b
 def restar(a,b):
     return a-b
 def multiplicar(a,b):
