@@ -17,11 +17,13 @@ def mayor_nom (lista):
     print(alumno)
     return alumno
 
-def promedio (lista):
+def promedio_alumnos (lista):
     suma = 0
     for nom, nota in lista:
         suma += nota
-    print (suma/len(lista))
+    promedio = suma/len(lista)
+    print (promedio)
+    return promedio
 
 def eliminar_alumno (lista):
     x= input("Alumno a eliminar: ")
@@ -77,7 +79,7 @@ while opcion != 6:
     elif opcion == 4:
         eliminar_alumno(alumnos)
     elif opcion == 5:
-        promedio (alumnos)
+        promedio_alumnos (alumnos)
     
     print(menu)
     opcion= int(input("Ingrese una opcion: "))
