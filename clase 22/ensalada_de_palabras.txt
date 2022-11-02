@@ -1,0 +1,113 @@
+
+def reglas():
+    print()
+    print("Bienvenido/a a Ensalada de Letras!")
+    print("El juego consiste en desordenar las letras de una palabra y luego adivinarla.")
+    print("Se te mostraran 5 palabras y deberas adivinarlas todas correctamente para ganar.")
+    print("Si adivinas una palabra correctamente obtendras 1 punto.")
+    print("Si adivinas una palabra incorrectamente no obtendras puntos.")
+    print("Al final del juego se te mostrara tu puntaje.")
+    print("Buena suerte!")
+    input("Presione ENTER para continuar...")
+
+def categorias(*args):
+    """Muestra las categorias disponibles y retorna la seleccionada"""
+    while True:
+        print("Elija una categoria de palabras para jugar: ")
+        for categoria in args:
+            print(f"{args.index(categoria)+1}.", categoria)
+        print(f"{str(len(args)+1)}. Salir")
+        opcion = input("Opcion: ")
+        if opcion in "".join([str(i) for i in range(1, len(args)+2)]):
+            return int(opcion)
+        else:
+            print("Opcion no valida")
+        
+def mezclar(lista):
+    """Retorna una lista de tuplas con las palabras mezcladas y la original"""
+    import random
+    palabras = random.sample(lista, 5)
+    resultado = []
+    for palabra in palabras:
+        if " " in palabra:
+            lista = palabra.split(" ")
+            random.shuffle(lista)
+            pal = ""
+            for elem in lista:
+                aux = "".join(random.sample(elem, len(elem)))
+                while elem == aux:
+                    aux = "".join(random.sample(elem, len(elem)))
+                pal += aux + " "
+        else:
+            pal = "".join(random.sample(palabra, len(palabra)))
+            while pal == palabra:
+                pal = "".join(random.sample(palabra, len(palabra)))
+        resultado.append((pal, palabra))
+    return resultado
+
+def jugar(**kwargs):
+    """Recibe un diccionario de categorias y palabras y retorna el puntaje"""
+    import time
+    
+    jugador = input("Ingrese su nombre: ")
+
+    while True:
+        puntaje = 0
+        categoria = categorias(*kwargs.keys())
+        if categoria == len(kwargs)+1:
+            return 'Salir'
+        
+        palabras = mezclar(kwargs[list(kwargs.keys())[categoria-1]])
+
+        print("Praparado/a? Empieza la cuenta regresiva:")
+        time.sleep(1)
+        print('3...')
+        time.sleep(1)
+        print("2...")
+        time.sleep(1)
+        print("1...")
+        time.sleep(1)
+        print("Comienza el juego!")
+        time.sleep(1)
+
+        for palabra in palabras:
+            print(f"{palabras.index(palabra)+1}.", palabra[0].upper().replace(""," - ").strip(" - "))
+            respuesta = input("Respuesta: ").lower()
+            if respuesta == palabra[1].lower():
+                print("Correcto!")
+                puntaje += 1
+            else:
+                print(f"Incorrecto! la respuesta correcta es {palabra[1]}")
+            time.sleep(1)
+        
+        porcentaje = puntaje/len(palabras)*100
+
+        print(f"***{jugador}*** Obtuviste {puntaje} puntos de {len(palabras)} posibles, es decir, {porcentaje}%")
+        time.sleep(3)
+
+        opc = input("Desea jugar de nuevo? (s/n): ")
+        while opc != "s" and opc != "n":
+            opc = input("Opcion no valida. Desea jugar de nuevo? (s/n): ")
+        if opc.lower() == 'n':
+            return None
+        
+
+with open("palabras.json", "r") as file:
+    import json
+    diccionario = json.load(file)
+
+while True:
+    print('''Bienvenido/a al juego ENSALADA DE LETRAS!!!
+    1. Jugar
+    2. Reglas
+    3. Salir
+    ''')
+    opcion = input('Opcion: ')
+    if opcion == '1':
+        jugar(**diccionario)
+    elif opcion == '2':
+        reglas()
+    elif opcion == '3':
+        break
+    else:
+        print('Opcion no valida')
