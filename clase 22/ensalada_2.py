@@ -46,21 +46,26 @@ def puntaje (cantidad):
     return cantidad*puntos_acierto
 
 def guardar_puntaje (jugador, puntos):
-    puntajes_json= {
-        "jugador": jugador,
-        "puntaje": puntos,
-    }
+    
+    # puntaje = {
+    #     "jugador": jugador,
+    #     "puntos": puntos,
+    # }
     try:
-        archivo= open("puntajes.json", "r+")
-        r = json.load(archivo)
-        json.dump(puntajes_json, archivo)
+        f= open("puntajes.json", "r")
+        d= json.load(f)
+        d[jugador]=puntos
+        f.close()
+        f = open("puntajes.json", "w")
+        json.dump(d, f)
+        f.close()
               
     except FileNotFoundError:
-        print("no se encontro el archivo json")
-    else:            
-        archivo= open("puntajes.json", "w")
-        json.dump(puntajes_json, archivo)
-        
+        f = open("puntajes.json", "w")
+        d=dict()
+        d[jugador]=puntos
+        json.dump(d, f)
+        f.close()
 #jugar
 def intro ():
     print("""
@@ -73,31 +78,33 @@ def intro ():
         """)
 
 
-intro()
-player = input("ingresa tu nombre: ")
-while True:
-    elegir_cat = int(input("elija una categoria: \n1.colores\n2.animales\n3.paises\n4.frutas\nopcion: "))
-    lista= ensalada_de_letras(elegir_cat)
-    copia_lista = lista.copy()
+if __name__=="__main__":
+    intro()
+    player = input("ingresa tu nombre: ")
+    while True:
+        elegir_cat = int(input("elija una categoria: \n1.colores\n2.animales\n3.paises\n4.frutas\nopcion: "))
+        lista= ensalada_de_letras(elegir_cat)
+        copia_lista = lista.copy()
 
-    correctas =0
+        correctas =0
 
-    for palabra, palabra_mezclada in lista:
-        print(palabra_mezclada.upper())
-        usuario = input("Ordene la palabra: ").lower()
-        if usuario == palabra:
-            correctas +=1
-        else:
-            print(f"Error. La palabra era {palabra}")
+        for palabra, palabra_mezclada in lista:
+            print(palabra_mezclada.upper())
+            usuario = input("Ordene la palabra: ").lower()
+            if usuario == palabra:
+                correctas +=1
+            else:
+                print(f"Error. La palabra era {palabra}")
 
-    print(f"Bien {player}, acertaste {correctas} {'palabra' if correctas ==1 else 'palabras'}. Tu puntaje es de {puntaje(correctas)}")
+        print(f"Bien {player}, acertaste {correctas} {'palabra' if correctas ==1 else 'palabras'}. Tu puntaje es de {puntaje(correctas)}")
 
-    guardar_puntaje(player, puntaje(correctas))
-    seguir_jugando =input("Desea volver a jugar?\n-si\n-no\n").lower()
-    while seguir_jugando != "si" and seguir_jugando !="no":
-        print("Elija si para seguir jugando, o no para terminar el programa")
+        guardar_puntaje(player, puntaje(correctas))
         seguir_jugando =input("Desea volver a jugar?\n-si\n-no\n").lower()
-    if seguir_jugando == "no" :
-        break
-    elif seguir_jugando == "si":
-        pass
+        while seguir_jugando != "si" and seguir_jugando !="no":
+            print("Elija si para seguir jugando, o no para terminar el programa")
+            seguir_jugando =input("Desea volver a jugar?\n-si\n-no\n").lower()
+        if seguir_jugando == "no" :
+            break
+        elif seguir_jugando == "si":
+            pass
+        
