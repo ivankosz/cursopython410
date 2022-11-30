@@ -45,12 +45,11 @@ class Machop (Pokemon, Normal, Lucha):
     def atacar (self, pokemon, tipo: str):
         if tipo.capitalize() == Lucha.nombre:
             self.atk = Lucha.get_ataque(self)
-            return pokemon.recibir_danho(self.atk.atacar())
         elif tipo.capitalize() == Normal.nombre:
             self.atk = Normal.get_ataque(self)
-            return pokemon.recibir_danho(self.atk.atacar())
         else:
             return ("Ataque no valido")
+        return pokemon.recibir_danho(self.atk.atacar())
         
 
 class Venonat (Pokemon, Bicho, Veneno):
@@ -61,9 +60,8 @@ class Venonat (Pokemon, Bicho, Veneno):
     def atacar (self, pokemon, tipo: str):
         if tipo.capitalize() == Bicho.nombre:
             atk = Bicho.get_ataque()
-            return pokemon.recibir_danho(atk.atacar())
         elif tipo.capitalize() == Veneno.nombre:
             atk = Veneno.get_ataque(self)
-            return pokemon.recibir_danho(atk.atacar())
         else:
             return("ataque no valido")
+        return pokemon.recibir_danho(atk.atacar())
